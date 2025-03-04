@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.urls import reverse
 from tracker.models import *
 from decimal import Decimal
 from django.db.models import Sum
@@ -34,3 +35,10 @@ def index(request):
 
     
     return render(request, 'index.html',context)
+
+
+def deleteTransaction(request, id):
+    transaction = Transaction.objects.get(id=id)
+    if transaction:
+        transaction.delete()
+    return render('/')
