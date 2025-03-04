@@ -10,8 +10,11 @@ class BaseModel(models.Model):
         abstract = True
 
 class Transaction(BaseModel):
-    description = models.CharField(max_length=100)
-    amount = models.DecimalField(max_digits=10,decimal_places=2)
+    description = models.CharField(max_length=100, blank=False, null=False)
+    amount = models.DecimalField(max_digits=10,decimal_places=2, blank=False, null=False)
 
     class Meta:
-        ordering = ['description']
+        ordering = ['created_at']
+
+    def isNegative(self):
+        return self.amount < 0
