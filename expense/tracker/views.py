@@ -4,6 +4,9 @@ from django.urls import reverse
 from tracker.models import *
 from decimal import Decimal
 from django.db.models import Sum
+from django.http import HttpResponseRedirect
+
+
 # Create your views here.
 def index(request):
     context = {}
@@ -41,4 +44,4 @@ def deleteTransaction(request, id):
     transaction = Transaction.objects.get(id=id)
     if transaction:
         transaction.delete()
-    return render('/')
+    return HttpResponseRedirect(reverse('index'))

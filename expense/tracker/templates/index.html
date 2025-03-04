@@ -31,7 +31,8 @@
     <ul id="list" class="list">
         {% for transaction in transactions %}
         <li class="{% if transaction.isNegative %} minus {% else %} plus {% endif %}">
-            {{transaction.description}} 
+            <span>{{transaction.description}}</span>
+            <span>{{transaction.amount}}</span>
             <button class="delete-btn"><a href="{% url 'delete' transaction.id %}"><i class="fa fa-times"></i></a></button>
         </li>
         {% endfor %}
