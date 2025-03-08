@@ -91,10 +91,13 @@ def user_login(request):
             user = authenticate(username=uname, password = upass)
             print(user)
 
-            if user:
-                login(request,user)
-                messages.success(request,"user logged in successfully!")
-                return HttpResponseRedirect(reverse('index'))
+            login(request,user)
+            messages.success(request,"user logged in successfully!")
+            return HttpResponseRedirect(reverse('index'))
+        
+        else:
+            messages.error(request,"Invalid credentials!")
+            return HttpResponseRedirect(reverse('login'))
 
 
     context = {
