@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Sign up form</title>
+{% endblock head %}
+
+
+{% block body %}
+    <form method="post">
+        {% csrf_token %}
+        {% for f in form %}
+        {{f.label}} {{f}} {{f.errors}}
+        <br><br>
+        {% endfor %}
+
+        <button type="submit">Create user</button>
+    </form>
+    
+    {% if messages %}
+        {% for message in messages %}
+        <script>
+            alert("{{message}}");
+
+        </script>    
+        {% endfor %}
+    {% endif %}
+
+{% endblock body %}

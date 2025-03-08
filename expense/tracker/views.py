@@ -5,7 +5,7 @@ from tracker.models import *
 from decimal import Decimal
 from django.db.models import Sum
 from django.http import HttpResponseRedirect
-
+from .forms import *
 
 # Create your views here.
 def index(request):
@@ -45,3 +45,22 @@ def deleteTransaction(request, id):
     if transaction:
         transaction.delete()
     return HttpResponseRedirect(reverse('index'))
+
+
+#user registration
+def sign_up(request):
+    form = SignupForm()
+    if request.method == 'POST':
+        # print(request.POST)
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            print('form is valid')
+            messages.success(request,'Account created successfully!')
+            form.save()
+        else:
+            messages.error(request,'Error occured!')
+
+    context = {
+        'form': form
+    }
+    return render(request, 'signup.html', context)
