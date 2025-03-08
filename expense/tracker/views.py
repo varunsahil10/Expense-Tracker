@@ -57,6 +57,12 @@ def sign_up(request):
         form = SignupForm(request.POST)
         if form.is_valid():
             print('form is valid')
+            data = form.cleaned_data
+            email = data.get('email')
+            if User.objects.filter(email=email).exists():
+                print(f"email already exists for {email}")
+                messages.error(request, "email already exists")
+                return HttpResponseRedirect(reverse('signup'))
             messages.success(request,'Account created successfully!')
             form.save()
         else:
