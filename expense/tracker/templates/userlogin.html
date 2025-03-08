@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block head %}
-    <title>Sign up form</title>
+    <title>Login form</title>
 {% endblock head %}
 
 
@@ -13,10 +13,10 @@
         <br><br>
         {% endfor %}
 
-        <button type="submit">Create user</button>
+        <button type="submit">Login</button>
     </form>
 
-    <a href="{% url "login" %}">Login </a>
+    <a href="{% url "signup" %}">Sign up </a>
 
     {% if messages %}
         {% for message in messages %}

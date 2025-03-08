@@ -6,6 +6,8 @@ from decimal import Decimal
 from django.db.models import Sum
 from django.http import HttpResponseRedirect
 from .forms import *
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
 def index(request):
@@ -64,3 +66,35 @@ def sign_up(request):
         'form': form
     }
     return render(request, 'signup.html', context)
+
+
+#user login
+def user_login(request):
+    form = AuthenticationForm()
+    if request.method == 'POST':
+        print(request.POST)
+        form = AuthenticationForm(request=request,data=request.POST)
+        if form.is_valid():
+            print('form is valid')
+            data = form.cleaned_data
+            uname = data.get('username')
+            upass = data.get('password')
+
+            print(uname, upass)
+
+            user = authenticate(username=uname, password = upass)
+            print(user)
+
+            if user:
+                login(request,user)
+                messages.success(request,"user logged in successfully!")
+                return HttpResponseRedirect(reverse('index'))
+
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'userlogin.html', context)
+
+
