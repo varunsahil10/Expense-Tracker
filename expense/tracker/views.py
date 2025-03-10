@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from tracker.models import *
 from decimal import Decimal
 from django.db.models import Sum
@@ -8,9 +8,14 @@ from django.http import HttpResponseRedirect
 from .forms import *
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+
 from pprint import pprint
 # Create your views here.
+# login_url_rev = reverse('login')
+@login_required
 def index(request):
+    
     # pprint(request.__dict__)
     # print(request.user.username)
     # print(request.user.password)
@@ -50,7 +55,7 @@ def deleteTransaction(request, id):
     transaction = Transaction.objects.get(id=id)
     if transaction:
         transaction.delete()
-    return HttpResponseRedirect(reverse('index'))
+    return redirect(reverse('index'))
 
 
 #user registration
@@ -66,7 +71,7 @@ def sign_up(request):
             if User.objects.filter(email=email).exists():
                 print(f"email already exists for {email}")
                 messages.error(request, "email already exists")
-                return HttpResponseRedirect(reverse('signup'))
+                return redirect(reverse('signup'))
             messages.success(request,'Account created successfully!')
             form.save()
         else:
@@ -97,11 +102,11 @@ def user_login(request):
 
             login(request,user)
             messages.success(request,"user logged in successfully!")
-            return HttpResponseRedirect(reverse('index'))
+            return redirect(reverse('index'))
         
         else:
             messages.error(request,"Invalid credentials!")
-            return HttpResponseRedirect(reverse('login'))
+            return redirect(reverse('login'))
 
 
     context = {
@@ -117,6 +122,6 @@ def user_logout(request):
 
     logout(request)
     messages.success(request,"user logged out successfully!")
-    return HttpResponseRedirect(reverse('login'))
+    return redirect(reverse('login'))
 
 
