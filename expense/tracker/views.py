@@ -8,9 +8,13 @@ from django.http import HttpResponseRedirect
 from .forms import *
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
-
+from pprint import pprint
 # Create your views here.
 def index(request):
+    # pprint(request.__dict__)
+    # print(request.user.username)
+    # print(request.user.password)
+
     context = {}
     if request.method == "POST":
         print(request.POST)
@@ -105,5 +109,14 @@ def user_login(request):
     }
 
     return render(request, 'userlogin.html', context)
+
+
+#user login
+def user_logout(request):
+    print(request.user)
+
+    logout(request)
+    messages.success(request,"user logged out successfully!")
+    return HttpResponseRedirect(reverse('login'))
 
 
