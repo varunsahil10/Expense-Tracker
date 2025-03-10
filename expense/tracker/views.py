@@ -33,10 +33,11 @@ def index(request):
             
         Transaction.objects.create(
             description = description,
-            amount = Decimal(amount)
+            amount = Decimal(amount),
+            user = request.user
         )
 
-    transactions = Transaction.objects.all()
+    transactions = Transaction.objects.filter(user=request.user)
 
     context.update({
         'transactions': transactions,
@@ -51,6 +52,7 @@ def index(request):
     return render(request, 'index.html',context)
 
 
+@login_required
 def deleteTransaction(request, id):
     transaction = Transaction.objects.get(id=id)
     if transaction:
